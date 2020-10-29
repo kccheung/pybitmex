@@ -194,7 +194,8 @@ class RestClient:
         for order in orders:
             if order.get('clOrdID') is None:
                 order['clOrdID'] = self._generate_client_order_id()
-            order['symbol'] = self.symbol
+            if order.get('symbol') is None:
+                order['symbol'] = self.symbol
             if post_only:
                 order['execInst'] = 'ParticipateDoNotInitiate'
         return self.curl_bitmex(path='order/bulk', postdict={'orders': orders}, verb='POST', max_retries=max_retries)
